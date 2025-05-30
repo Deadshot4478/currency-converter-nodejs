@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"],
+        select {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border: 1px solid #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .error {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .currency-select-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px; /* Space between the two select inputs */
+        }
+        .currency-select-group > div {
+            flex: 1; /* Each div takes equal space */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Currency Converter</h1>
+
+        <form action="/convert" method="POST">
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" value="<%= amount %>" step="0.01" required>
+            </div>
+
+            <div class="currency-select-group">
+                <div class="form-group">
+                    <label for="fromCurrency">From Currency:</label>
+                    <select id="fromCurrency" name="fromCurrency" required>
+                        <option value="USD" <%= fromCurrency === 'USD' ? 'selected' : '' %>>USD - United States Dollar</option>
+                        <option value="EUR" <%= fromCurrency === 'EUR' ? 'selected' : '' %>>EUR - Euro</option>
+                        <option value="GBP" <%= fromCurrency === 'GBP' ? 'selected' : '' %>>GBP - British Pound</option>
+                        <option value="JPY" <%= fromCurrency === 'JPY' ? 'selected' : '' %>>JPY - Japanese Yen</option>
+                        <option value="AUD" <%= fromCurrency === 'AUD' ? 'selected' : '' %>>AUD - Australian Dollar</option>
+                        <option value="CAD" <%= fromCurrency === 'CAD' ? 'selected' : '' %>>CAD - Canadian Dollar</option>
+                        <option value="CHF" <%= fromCurrency === 'CHF' ? 'selected' : '' %>>CHF - Swiss Franc</option>
+                        <option value="CNY" <%= fromCurrency === 'CNY' ? 'selected' : '' %>>CNY - Chinese Yuan</option>
+                        <option value="INR" <%= fromCurrency === 'INR' ? 'selected' : '' %>>INR - Indian Rupee</option>
+                        <option value="BRL" <%= fromCurrency === 'BRL' ? 'selected' : '' %>>BRL - Brazilian Real</option>
+                        <option value="ZAR" <%= fromCurrency === 'ZAR' ? 'selected' : '' %>>ZAR - South African Rand</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toCurrency">To Currency:</label>
+                    <select id="toCurrency" name="toCurrency" required>
+                        <option value="EUR" <%= toCurrency === 'EUR' ? 'selected' : '' %>>EUR - Euro</option>
+                        <option value="USD" <%= toCurrency === 'USD' ? 'selected' : '' %>>USD - United States Dollar</option>
+                        <option value="GBP" <%= toCurrency === 'GBP' ? 'selected' : '' %>>GBP - British Pound</option>
+                        <option value="JPY" <%= toCurrency === 'JPY' ? 'selected' : '' %>>JPY - Japanese Yen</option>
+                        <option value="AUD" <%= toCurrency === 'AUD' ? 'selected' : '' %>>AUD - Australian Dollar</option>
+                        <option value="CAD" <%= toCurrency === 'CAD' ? 'selected' : '' %>>CAD - Canadian Dollar</option>
+                        <option value="CHF" <%= toCurrency === 'CHF' ? 'selected' : '' %>>CHF - Swiss Franc</option>
+                        <option value="CNY" <%= toCurrency === 'CNY' ? 'selected' : '' %>>CNY - Chinese Yuan</option>
+                        <option value="INR" <%= toCurrency === 'INR' ? 'selected' : '' %>>INR - Indian Rupee</option>
+                        <option value="BRL" <%= toCurrency === 'BRL' ? 'selected' : '' %>>BRL - Brazilian Real</option>
+                        <option value="ZAR" <%= toCurrency === 'ZAR' ? 'selected' : '' %>>ZAR - South African Rand</option>
+                        </select>
+                </div>
+            </div>
+
+            <button type="submit">Convert</button>
+        </form>
+
+        <% if (error) { %>
+            <div class="error">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <% if (result) { %>
+            <div class="result">
+                <%= result %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
