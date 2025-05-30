@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
     <link rel="icon" href="/exchange.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* CSS Variables for Themes */
         :root {
@@ -147,6 +146,14 @@
         .currency-select-group > div {
             flex: 1;
         }
+        
+        .theme-switch .icon-image { /* Changed from .icon to .icon-image */
+            width: 24px;   /* Adjust size as needed */
+            height: 24px;  /* Adjust size as needed */
+            margin-right: 8px; /* Space between icon and switch */
+            cursor: pointer; /* Indicate it's clickable */
+            vertical-align: middle; /* Align with the switch */
+        }
 
         /* Dark Mode Switch Styling */
         .theme-switch {
@@ -200,7 +207,8 @@
 </head>
 <body class="<%= themeClass %>"> 
     <div class="theme-switch">
-        <i id="theme-icon" class="icon"></i>
+        <img id="theme-image" class="icon-image" alt="Theme Toggle">
+
         <input type="checkbox" id="theme-toggle">
         <label for="theme-toggle"></label>
     </div>
@@ -269,20 +277,19 @@
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
-        const themeIcon = document.getElementById('theme-icon'); // Get reference to the icon
+        const themeImage = document.getElementById('theme-image'); // Get reference to the IMAGE
 
-function applyTheme(theme) {
+        // Function to apply the selected theme and update icon
+        function applyTheme(theme) {
             body.className = theme; // Set the class on the body
             localStorage.setItem('theme', theme); // Save preference
             themeToggle.checked = (theme === 'dark-mode'); // Update toggle state
 
-            // Update the icon based on the theme
+            // Update the IMAGE SOURCE based on the theme
             if (theme === 'dark-mode') {
-                themeIcon.classList.remove('fa-sun'); // Remove sun icon class
-                themeIcon.classList.add('fa-moon');   // Add moon icon class
+                themeImage.src = '/moon.png'; // Path to your moon icon
             } else {
-                themeIcon.classList.remove('fa-moon'); // Remove moon icon class
-                themeIcon.classList.add('fa-sun');    // Add sun icon class
+                themeImage.src = '/sun.svg'; // Path to your sun icon
             }
         }
 
