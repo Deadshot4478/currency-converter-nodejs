@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
     <link rel="icon" href="/exchange.png" type="image/png">
+    
     <style>
         /* CSS Variables for Themes */
         :root {
@@ -43,11 +44,13 @@
             --shadow-color: rgba(0, 0, 0, 0.3);
         }
 
-        .theme-switch .icon{
-            font-size: 1.2em; 
-            margin-right: 8px; 
-            color: var(--text-color); 
-            transition: color 0.3s ease;
+        /* Styling for the Theme Switch Icon (now an image) */
+        .theme-switch .icon-image { 
+            width: 24px;   /* Adjust size as needed */
+            height: 24px;  /* Adjust size as needed */
+            margin-right: 8px; /* Space between icon and switch */
+            cursor: pointer; /* Indicate it's clickable */
+            vertical-align: middle; /* Align with the switch */
         }
 
         body {
@@ -138,26 +141,29 @@
             text-align: center;
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Adjust currency-select-group to accommodate the button */
         .currency-select-group {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
+            align-items: flex-end; /* Align inputs/labels at the bottom */
+            gap: 15px; /* Space between the two select inputs */
         }
         .currency-select-group > div {
-            flex: 1;
+            flex: 1; /* Each div takes equal space */
         }
-        
-        .theme-switch .icon-image { /* Changed from .icon to .icon-image */
-            width: 24px;   /* Adjust size as needed */
-            height: 24px;  /* Adjust size as needed */
-            margin-right: 8px; /* Space between icon and switch */
-            cursor: pointer; /* Indicate it's clickable */
-            vertical-align: middle; /* Align with the switch */
+        /* Further adjust labels for better alignment */
+        .currency-select-group label {
+            margin-bottom: 8px; /* Give labels more space above inputs */
+        }
+        /* Make select inputs fit perfectly */
+        .currency-select-group select {
+            width: 100%; /* Make select fill available space */
         }
 
-        /* Dark Mode Switch Styling */
+        /* Dark Mode Switch Styling (no changes needed here, as it's generic) */
         .theme-switch {
-            position: absolute; /* Position it outside the main container */
+            position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
@@ -173,13 +179,13 @@
         .theme-switch label {
             cursor: pointer;
             text-indent: -9999px;
-            width: 50px; /* Width of the switch track */
-            height: 25px; /* Height of the switch track */
-            background: var(--border-color); /* Light background for the track */
+            width: 50px;
+            height: 25px;
+            background: var(--border-color);
             display: block;
-            border-radius: 25px; /* Make it pill-shaped */
+            border-radius: 25px;
             position: relative;
-            margin-left: 10px; /* Space between text and switch */
+            margin-left: 10px;
             transition: background-color 0.3s ease;
         }
         .theme-switch label:after {
@@ -187,28 +193,57 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 21px; /* Width of the toggle circle */
-            height: 21px; /* Height of the toggle circle */
-            background: #fff; /* White circle */
-            border-radius: 90px; /* Make it circular */
+            width: 21px;
+            height: 21px;
+            background: #fff;
+            border-radius: 90px;
             transition: 0.3s;
         }
         .theme-switch input:checked + label {
-            background: #8e24aa; /* Purple background when checked */
+            background: #8e24aa;
         }
         .theme-switch input:checked + label:after {
             left: calc(100% - 2px);
             transform: translateX(-100%);
         }
         .theme-switch label:active:after {
-            width: 30px; /* Slightly wider when active */
+            width: 30px;
+        }
+
+        /* Styling for the Swap Button (now an image) */
+        .swap-button-container {
+            display: flex;
+            align-items: center; /* Vertically align the button */
+            justify-content: center; /* Center the button horizontally */
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+        .swap-button {
+            background: none; /* No background */
+            border: none; /* No border */
+            cursor: pointer;
+            padding: 0; /* Remove default button padding */
+        }
+        .swap-button:hover {
+            opacity: 0.8; /* Slight hover effect */
+        }
+        .swap-button .swap-icon-image { /* Style for the image inside the button */
+            width: 28px; /* Adjust size as needed */
+            height: 28px; /* Adjust size as needed */
+            vertical-align: middle; /* Align with the button container */
+            filter: var(--swap-icon-filter, invert(0%)); /* Default for light mode */
+            transition: filter 0.3s ease;
+        }
+
+        /* Filter for dark mode swap icon to change its color */
+        body.dark-mode .swap-button .swap-icon-image {
+            filter: var(--swap-icon-filter-dark, invert(100%)); /* Invert color for dark mode */
         }
     </style>
 </head>
 <body class="<%= themeClass %>"> 
     <div class="theme-switch">
         <img id="theme-image" class="icon-image" alt="Theme Toggle">
-
         <input type="checkbox" id="theme-toggle">
         <label for="theme-toggle"></label>
     </div>
@@ -238,6 +273,12 @@
                         <option value="BRL" <%= fromCurrency === 'BRL' ? 'selected' : '' %>>BRL - Brazilian Real</option>
                         <option value="ZAR" <%= fromCurrency === 'ZAR' ? 'selected' : '' %>>ZAR - South African Rand</option>
                     </select>
+                </div>
+
+                <div class="swap-button-container">
+                    <button type="button" id="swap-currencies" class="swap-button" title="Swap Currencies">
+                        <img id="swap-icon-image" src="/swap.svg" alt="Swap Currencies" class="swap-icon-image">
+                    </button>
                 </div>
 
                 <div class="form-group">
@@ -277,19 +318,28 @@
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
-        const themeImage = document.getElementById('theme-image'); // Get reference to the IMAGE
+        const themeImage = document.getElementById('theme-image');
+
+        // New elements for swap button
+        const fromCurrencySelect = document.getElementById('fromCurrency');
+        const toCurrencySelect = document.getElementById('toCurrency');
+        const swapButton = document.getElementById('swap-currencies'); // The button element
+        const swapIconImage = document.getElementById('swap-icon-image'); // The image inside the button
+
 
         // Function to apply the selected theme and update icon
         function applyTheme(theme) {
-            body.className = theme; // Set the class on the body
-            localStorage.setItem('theme', theme); // Save preference
-            themeToggle.checked = (theme === 'dark-mode'); // Update toggle state
+            body.className = theme;
+            localStorage.setItem('theme', theme);
+            themeToggle.checked = (theme === 'dark-mode');
 
-            // Update the IMAGE SOURCE based on the theme
             if (theme === 'dark-mode') {
                 themeImage.src = '/moon.png'; // Path to your moon icon
+                // You might also want to change the swap icon's color for dark mode if it's a solid color image
+                // This is handled by CSS filters for consistency
             } else {
-                themeImage.src = '/sun.svg'; // Path to your sun icon
+                themeImage.src = '/sun.png'; // Path to your sun icon
+                // This is handled by CSS filters for consistency
             }
         }
 
@@ -298,11 +348,10 @@
         if (savedTheme) {
             applyTheme(savedTheme);
         } else {
-            // Check user's system preference (optional)
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 applyTheme('dark-mode');
             } else {
-                applyTheme('light-mode'); // Default theme
+                applyTheme('light-mode');
             }
         }
 
@@ -313,6 +362,13 @@
             } else {
                 applyTheme('light-mode');
             }
+        });
+
+        // --- JavaScript for the Swap Button ---
+        swapButton.addEventListener('click', () => {
+            const tempValue = fromCurrencySelect.value;
+            fromCurrencySelect.value = toCurrencySelect.value;
+            toCurrencySelect.value = tempValue;
         });
     </script>
 </body>
