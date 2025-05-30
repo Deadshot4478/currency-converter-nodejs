@@ -4,29 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
-    <link rel="icon" href ="/exchange.png" type="image/png">
+    <link rel="icon" href="/exchange.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Mode Defaults */
+            --bg-color: #f4f4f4;
+            --container-bg-color: #fff;
+            --text-color: #333;
+            --label-color: #555;
+            --border-color: #ddd;
+            --button-bg-color: #007bff;
+            --button-hover-bg-color: #0056b3;
+            --result-bg-color: #e9f7ef;
+            --result-border-color: #d4edda;
+            --result-text-color: #155724;
+            --error-bg-color: #f8d7da;
+            --error-border-color: #f5c6cb;
+            --error-text-color: #721c24;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --bg-color: #2c2c2c;
+            --container-bg-color: #3e3e3e;
+            --text-color: #f0f0f0;
+            --label-color: #d0d0d0;
+            --border-color: #555;
+            --button-bg-color: #6a1b9a; /* A purple for dark mode */
+            --button-hover-bg-color: #4a148c;
+            --result-bg-color: #28a745; /* Darker green for result in dark mode */
+            --result-border-color: #218838;
+            --result-text-color: #fff;
+            --error-bg-color: #dc3545; /* Darker red for error in dark mode */
+            --error-border-color: #c82333;
+            --error-text-color: #fff;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-switch .icon{
+            font-size: 1.2em; 
+            margin-right: 8px; 
+            color: var(--text-color); 
+            transition: color 0.3s ease;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            transition: background-color 0.3s ease; /* Smooth transition */
         }
         .container {
-            background-color: #fff;
+            background-color: var(--container-bg-color);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px var(--shadow-color);
             width: 100%;
             max-width: 400px;
             text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
         }
         h1 {
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 25px;
+            transition: color 0.3s ease;
         }
         .form-group {
             margin-bottom: 15px;
@@ -36,19 +84,23 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #555;
+            color: var(--label-color);
+            transition: color 0.3s ease;
         }
         input[type="number"],
         select {
             width: calc(100% - 20px); /* Adjust for padding */
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 16px;
-            box-sizing: border-box; /* Include padding in element's total width and height */
+            box-sizing: border-box;
+            background-color: var(--container-bg-color); /* Inherit background */
+            color: var(--text-color); /* Inherit text color */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         button {
-            background-color: #007bff;
+            background-color: var(--button-bg-color);
             color: white;
             padding: 12px 20px;
             border: none;
@@ -58,43 +110,101 @@
             margin-top: 20px;
             width: 100%;
             box-sizing: border-box;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: var(--button-hover-bg-color);
         }
         .result {
             margin-top: 25px;
             padding: 15px;
-            background-color: #e9f7ef;
-            border: 1px solid #d4edda;
-            color: #155724;
+            background-color: var(--result-bg-color);
+            border: 1px solid var(--result-border-color);
+            color: var(--result-text-color);
             border-radius: 4px;
             font-weight: bold;
             font-size: 1.1em;
             text-align: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         .error {
             margin-top: 25px;
             padding: 15px;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+            background-color: var(--error-bg-color);
+            border: 1px solid var(--error-border-color);
+            color: var(--error-text-color);
             border-radius: 4px;
             font-weight: bold;
             font-size: 1.1em;
             text-align: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         .currency-select-group {
             display: flex;
             justify-content: space-between;
-            gap: 15px; /* Space between the two select inputs */
+            gap: 15px;
         }
         .currency-select-group > div {
-            flex: 1; /* Each div takes equal space */
+            flex: 1;
+        }
+
+        /* Dark Mode Switch Styling */
+        .theme-switch {
+            position: absolute; /* Position it outside the main container */
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+        .theme-switch input[type="checkbox"] {
+            height: 0;
+            width: 0;
+            visibility: hidden;
+        }
+        .theme-switch label {
+            cursor: pointer;
+            text-indent: -9999px;
+            width: 50px; /* Width of the switch track */
+            height: 25px; /* Height of the switch track */
+            background: var(--border-color); /* Light background for the track */
+            display: block;
+            border-radius: 25px; /* Make it pill-shaped */
+            position: relative;
+            margin-left: 10px; /* Space between text and switch */
+            transition: background-color 0.3s ease;
+        }
+        .theme-switch label:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px; /* Width of the toggle circle */
+            height: 21px; /* Height of the toggle circle */
+            background: #fff; /* White circle */
+            border-radius: 90px; /* Make it circular */
+            transition: 0.3s;
+        }
+        .theme-switch input:checked + label {
+            background: #8e24aa; /* Purple background when checked */
+        }
+        .theme-switch input:checked + label:after {
+            left: calc(100% - 2px);
+            transform: translateX(-100%);
+        }
+        .theme-switch label:active:after {
+            width: 30px; /* Slightly wider when active */
         }
     </style>
 </head>
-<body>
+<body class="<%= themeClass %>"> 
+    <div class="theme-switch">
+        <i id="theme-icon" class="icon"></i>
+        <input type="checkbox" id="theme-toggle">
+        <label for="theme-toggle"></label>
+    </div>
+
     <div class="container">
         <h1>Currency Converter</h1>
 
@@ -119,7 +229,7 @@
                         <option value="INR" <%= fromCurrency === 'INR' ? 'selected' : '' %>>INR - Indian Rupee</option>
                         <option value="BRL" <%= fromCurrency === 'BRL' ? 'selected' : '' %>>BRL - Brazilian Real</option>
                         <option value="ZAR" <%= fromCurrency === 'ZAR' ? 'selected' : '' %>>ZAR - South African Rand</option>
-                        </select>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -136,7 +246,7 @@
                         <option value="INR" <%= toCurrency === 'INR' ? 'selected' : '' %>>INR - Indian Rupee</option>
                         <option value="BRL" <%= toCurrency === 'BRL' ? 'selected' : '' %>>BRL - Brazilian Real</option>
                         <option value="ZAR" <%= toCurrency === 'ZAR' ? 'selected' : '' %>>ZAR - South African Rand</option>
-                        </select>
+                    </select>
                 </div>
             </div>
 
@@ -155,5 +265,48 @@
             </div>
         <% } %>
     </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon'); // Get reference to the icon
+
+function applyTheme(theme) {
+            body.className = theme; // Set the class on the body
+            localStorage.setItem('theme', theme); // Save preference
+            themeToggle.checked = (theme === 'dark-mode'); // Update toggle state
+
+            // Update the icon based on the theme
+            if (theme === 'dark-mode') {
+                themeIcon.classList.remove('fa-sun'); // Remove sun icon class
+                themeIcon.classList.add('fa-moon');   // Add moon icon class
+            } else {
+                themeIcon.classList.remove('fa-moon'); // Remove moon icon class
+                themeIcon.classList.add('fa-sun');    // Add sun icon class
+            }
+        }
+
+        // On page load, apply the saved theme or default to light
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        } else {
+            // Check user's system preference (optional)
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyTheme('dark-mode');
+            } else {
+                applyTheme('light-mode'); // Default theme
+            }
+        }
+
+        // Listen for changes on the toggle switch
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                applyTheme('dark-mode');
+            } else {
+                applyTheme('light-mode');
+            }
+        });
+    </script>
 </body>
 </html>

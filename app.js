@@ -24,13 +24,15 @@ app.get('/', (req, res) => {
         fromCurrency: 'USD', // Default values
         toCurrency: 'EUR',   // Default values
         result: null,
-        error: null
+        error: null,
+        themeClass: 'light-mode'
     });
 });
 
 // Route for handling currency conversion POST request
 app.post('/convert', async (req, res) => {
     const { amount, fromCurrency, toCurrency } = req.body;
+     const currentThemeClass = 'light-mode';
 
     // Basic validation
     if (isNaN(parseFloat(amount)) || !fromCurrency || !toCurrency) {
@@ -39,7 +41,8 @@ app.post('/convert', async (req, res) => {
             fromCurrency: fromCurrency,
             toCurrency: toCurrency,
             result: null,
-            error: 'Please enter a valid amount and select both currencies.'
+            error: 'Please enter a valid amount and select both currencies.',
+            themeClass: currentThemeClass
         });
     }
 
@@ -50,7 +53,8 @@ app.post('/convert', async (req, res) => {
             fromCurrency: fromCurrency,
             toCurrency: toCurrency,
             result: `${parseFloat(amount).toFixed(2)} ${fromCurrency.toUpperCase()} = ${convertedAmount.toFixed(2)} ${toCurrency.toUpperCase()}`,
-            error: null
+            error: null,
+            themeClass: currentThemeClass
         });
     } catch (error) {
         console.error('Conversion error:', error.message); // Log full error for debugging
@@ -59,7 +63,8 @@ app.post('/convert', async (req, res) => {
             fromCurrency: fromCurrency,
             toCurrency: toCurrency,
             result: null,
-            error: `Failed to convert: ${error.message}` // Display a user-friendly error
+            error: `Failed to convert: ${error.message}`,
+            themeClass: currentThemeClass // Display a user-friendly error
         });
     }
 });
