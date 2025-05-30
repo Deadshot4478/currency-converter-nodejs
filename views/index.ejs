@@ -210,23 +210,23 @@
             width: 30px;
         }
 
-        /* Styling for the Swap Button (now an image) */
+        
         .swap-button-container {
             display: flex;
-            align-items: center; /* Vertically align the button */
-            justify-content: center; /* Center the button horizontally */
+            align-items: center; 
+            justify-content: center; 
             margin-top: auto;
             margin-bottom: 20px;
         }
         .swap-button {
-            background: none; /* No background */
-            border: none; /* No border */
+            background: none;
+            border: none; 
             cursor: pointer;
-            padding: 0; /* Remove default button padding */
+            padding: 0;
         }
         .swap-button:hover {
-            opacity: 0.8; /* Slight hover effect */
-        }
+            opacity: 0.8;
+                }
         .swap-button .swap-icon-image { /* Style for the image inside the button */
             width: 28px; /* Adjust size as needed */
             height: 28px; /* Adjust size as needed */
@@ -335,11 +335,10 @@
 
             if (theme === 'dark-mode') {
                 themeImage.src = '/moon.png'; // Path to your moon icon
-                // You might also want to change the swap icon's color for dark mode if it's a solid color image
-                // This is handled by CSS filters for consistency
+                
             } else {
-                themeImage.src = '/sun.png'; // Path to your sun icon
-                // This is handled by CSS filters for consistency
+                themeImage.src = '/sun.svg'; 
+                
             }
         }
 
