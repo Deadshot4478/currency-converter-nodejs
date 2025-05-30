@@ -14,7 +14,7 @@ app.set('view engine', 'ejs'); // Set EJS as the templating engine
 app.set('views', path.join(__dirname, 'views')); // Specify where EJS templates are located
 
 // Serve static files (like CSS, JS if you add them later)
-// app.use(express.static(path.join(__dirname, 'public'))); // Uncomment if you create a 'public' folder for CSS/JS
+app.use(express.static(path.join(__dirname, 'public'))); // Uncomment if you create a 'public' folder for CSS/JS
 
 // Route for the home page (displays the form)
 app.get('/', (req, res) => {
