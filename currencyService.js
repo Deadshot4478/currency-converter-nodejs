@@ -1,4 +1,4 @@
-// currencyService.js
+
 const axios = require('axios');
 
 // API key is now loaded from environment variables
@@ -7,8 +7,8 @@ const BASE_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/`;
 
 /**
  * Fetches the exchange rates for a given base currency.
- * @param {string} baseCurrency - The 3-letter code of the base currency (e.g., "USD", "EUR").
- * @returns {object} - An object containing exchange rates or throws an error.
+ * @param {string} baseCurrency 
+ * @returns {object} 
  */
 async function getExchangeRates(baseCurrency) {
     if (!API_KEY) {
@@ -41,7 +41,7 @@ async function getExchangeRates(baseCurrency) {
  * @param {number} amount - The amount to convert.
  * @param {string} fromCurrency - The 3-letter code of the source currency.
  * @param {string} toCurrency - The 3-letter code of the target currency.
- * @returns {number} - The converted amount.
+ * @rewturns {number} - The converted amount.
  */
 async function convertCurrency(amount, fromCurrency, toCurrency) {
     if (fromCurrency.toUpperCase() === toCurrency.toUpperCase()) {

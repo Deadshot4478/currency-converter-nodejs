@@ -1,31 +1,30 @@
-// app.js
-require('dotenv').config(); // Load environment variables from .env file
+
+require('dotenv').config(); 
 
 const express = require('express');
 const path = require('path');
-const { convertCurrency } = require('./currencyService'); // Import our conversion logic
+const { convertCurrency } = require('./currencyService'); 
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Use port from environment or default to 3000
+const PORT = process.env.PORT || 3000; 
 
-// Middleware Setup
-app.use(express.urlencoded({ extended: true })); // To parse form data (body-parser is included in Express now)
-app.set('view engine', 'ejs'); // Set EJS as the templating engine
-app.set('views', path.join(__dirname, 'views')); // Specify where EJS templates are located
+app.use(express.urlencoded({ extended: true })); 
+app.set('view engine', 'ejs'); 
+app.set('views', path.join(__dirname, 'views')); 
 
-// Serve static files (like CSS, JS if you add them later)
-app.use(express.static(path.join(__dirname, 'public'))); // Uncomment if you create a 'public' folder for CSS/JS
+
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 // Route for the home page (displays the form)
 app.get('/', (req, res) => {
     // Render the index.ejs template with no initial results or error
     res.render('index', {
         amount: '',
-        fromCurrency: 'USD', // Default values
-        toCurrency: 'EUR',   // Default values
+        fromCurrency: 'INR', // Default values
+        toCurrency: 'USD',   // Default values
         result: null,
         error: null,
-        themeClass: 'light-mode'
+        themeClass: 'dark-mode' // Default theme class
     });
 });
 
